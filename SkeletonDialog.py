@@ -53,7 +53,6 @@ class TvScreenLabel(QLabel):
 
 class SkeletonDialog(AppletDialog):
     aboutToClose = pyqtSignal()
-    messageToSkeleton = pyqtSignal(str)
     switchLed = pyqtSignal(str, str)
 
     # __________________________________________________________________
@@ -121,10 +120,5 @@ class SkeletonDialog(AppletDialog):
         dlg = SkeletonSettingsDialog(self._logger)
         dlg.setModal(True)
         dlg.move(self.pos() + QPoint(20, 20))
-        dlg.messageToSkeleton.connect(self.messageToSkeleton)
         dlg.exec()
 
-    # __________________________________________________________________
-    @pyqtSlot()
-    def stop(self):
-        self.messageToSkeleton.emit("effacer")

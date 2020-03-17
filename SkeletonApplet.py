@@ -36,7 +36,6 @@ class SkeletonApplet(MqttApplet):
         self._SkeletonDialog = SkeletonDialog(self.tr("Skeleton"), './room.png', self._logger)
         self._SkeletonDialog.aboutToClose.connect(self.exitOnClose)
         self.skeletonMessageReceived.connect(self._SkeletonDialog.skeletonMessage)
-        self._SkeletonDialog.messageToSkeleton.connect(self.publishMessageToSkeleton)
         self._SkeletonDialog.show()
 
     # __________________________________________________________________

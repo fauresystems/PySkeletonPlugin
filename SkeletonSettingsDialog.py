@@ -14,7 +14,6 @@ from PyQt5.QtGui import QIcon
 
 
 class SkeletonSettingsDialog(QDialog):
-    messageToSkeleton = pyqtSignal(str)
 
     # __________________________________________________________________
     def __init__(self, logger):
