@@ -18,39 +18,6 @@ from PyQt5.QtWidgets import (QHBoxLayout, QVBoxLayout, QFrame,
                              QPlainTextEdit, QPushButton, QSizePolicy, QComboBox, QLabel)
 
 
-class TvScreenLabel(QLabel):
-
-    # __________________________________________________________________
-    def __init__(self, text, hint=None):
-        super().__init__(text)
-
-        palette = QPalette()
-        palette.setColor(QPalette.Window, Qt.black)
-        palette.setColor(QPalette.WindowText, Qt.white)
-
-        self.setAutoFillBackground(True)
-        self.setPalette(palette)
-
-        self.setStyleSheet("font-size:20px")
-
-        self.hint = hint
-
-    # __________________________________________________________________
-    def heightForWidth(self, w):
-        return w * 9 / 16
-
-    # __________________________________________________________________
-    def sizeHint(self):
-        # return QSize(160, 90)
-        # ↕return QSize(320, 180)
-        if self.hint:
-            hint = self.hint
-        else:
-            hint = self.size()
-
-        return hint
-
-
 class SkeletonDialog(AppletDialog):
     aboutToClose = pyqtSignal()
     switchLed = pyqtSignal(str, str)
