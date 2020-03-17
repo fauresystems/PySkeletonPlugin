@@ -86,8 +86,11 @@ props_name = ''
 props = ''
 if len(folders) >= 4 and folders[-3] == 'Room' and folders[-2] == 'Plugins':
 	room_name = folders[-4]
-if len(folders) >= 1 and folders[-1].startswith('Py') and folders[-1].endswith('Plugin'):
-	plugin_name = folders[-1][2:-6].capitalize()
+if len(folders) >= 1:
+	if folders[-1].startswith('Py') and folders[-1].endswith('Plugin'):
+		plugin_name = folders[-1][2:-6].capitalize()
+	else:
+		plugin_name = folders[-1].capitalize()
 if len(plugin_name):
 	props_name = plugin_name + " Props"
 	props = plugin_name.lower()
