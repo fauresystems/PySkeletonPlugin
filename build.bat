@@ -22,6 +22,7 @@ if defined _OLD_CODEPAGE (
 )
 
 python build.py
+pause
 
 if defined _OLD_VIRTUAL_PROMPT (
     set "PROMPT=%_OLD_VIRTUAL_PROMPT%"

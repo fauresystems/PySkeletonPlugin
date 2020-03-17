@@ -22,6 +22,7 @@ To switch MQTT broker, kill the program and start again with new arguments.
 
 import os
 import sys
+import re
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
@@ -31,25 +32,73 @@ from PyQt5.QtWidgets import (QApplication, QDialog, QGridLayout, QLineEdit,
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
+# __________________________________________________________________
+def multiwordReplace(text, wordDic):
+    """
+    take a text and replace words that match a key in a dictionary with
+    the associated value, return the changed text
+    """
+    rc = re.compile('|'.join(map(re.escape, wordDic)))
+    def translate(match):
+        return wordDic[match.group(0)]
+    return rc.sub(translate, text)
+
+
+# __________________________________________________________________
 def build_new_plugin():
 	room_name = roomNameInput.text().strip()
 	applet = appletInput.text().replace(' ','').strip()
 	props_name = propsNameInput.text().strip()
 	props = propsInput.text().replace(' ','').strip().lower()
 	broker = brokerInput.text().strip()
-	pass
+	replacements = {}
+	replacements['%ROOM_NAME%'] = room_name
+	replacements['%APPLET%'] = applet
+	replacements['%PROPS_NAME%'] = props_name
+	replacements['%PROPS%'] = props
+	replacements['%BROKER%'] = broker
+	replacements['Skeleton'] = applet
+	files_to_hack = ['definitions.ini', 'constants.py', 'main.py', 'SkeletonApplet.py', 'SkeletonDialog.py', 'SkeletonSettingsDialog.py']
+	files_to_rename = ['SkeletonApplet.py', 'SkeletonDialog.py', 'SkeletonSettingsDialog.py']
+	for file_to_hack in files_to_hack:
+		with open(file_to_hack, 'r') as fh:
+			data = multiwordReplace(fh.read(), replacements)
+		with open(file_to_hack, 'w') as fh:
+			fh.write(data)
+		print(file_to_hack, 'hacked for new plugin')
+	for file_to_rename in files_to_rename:
+		dest = file_to_rename.replace('Skeleton', applet)
+		os.rename(file_to_rename, dest)
+		print(file_to_rename, 'renamed to', dest)
+	print('New', applet, 'plugin done for', room_name)
+	app.quit()
 
 
+# __________________________________________________________________
 app = QApplication([])
 app.setApplicationName("Build new plugin from skeleton")
+folders = os.path.abspath(os.path.curdir).split(os.path.sep)
+# C:\Users\jm_de\Documents\Xcape\Room\My room\Room\Plugins\PyEchoPlugin
+# ['C:', 'Users', 'jm_de', 'Documents', 'Xcape', 'Room', 'My room', 'Room', 'Plugins', 'PyEchoPlugin']
+room_name = ''
+plugin_name = ''
+props_name = ''
+props = ''
+if len(folders) >= 4 and folders[-3] == 'Room' and folders[-2] == 'Plugins':
+	room_name = folders[-4]
+if len(folders) >= 1 and folders[-1].startswith('Py') and folders[-1].endswith('Plugin'):
+	plugin_name = folders[-1][2:-6].capitalize()
+if len(plugin_name):
+	props_name = plugin_name + " Props"
+	props = plugin_name.lower()
 dialog = QDialog()
 dialog.setWindowIcon(QIcon('./room.png'))
 dialog.setWindowFlags(dialog.windowFlags() & ~Qt.WindowContextHelpButtonHint)
-roomNameInput = QLineEdit()
-appletInput = QLineEdit()
-propsNameInput = QLineEdit()
-propsInput = QLineEdit()
-brokerInput = QLineEdit()
+roomNameInput = QLineEdit(room_name)
+appletInput = QLineEdit(plugin_name)
+propsNameInput = QLineEdit(props_name)
+propsInput = QLineEdit(props)
+brokerInput = QLineEdit('localhost')
 applyButton = QPushButton('Apply')
 applyButton.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.MinimumExpanding)
 applyButton.clicked.connect(build_new_plugin)

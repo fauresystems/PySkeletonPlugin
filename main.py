@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-skeleton.py
+main.py
 MIT License (c) Marie Faure <dev at faure dot systems>
 
 Room (xcape.io) plugin.
