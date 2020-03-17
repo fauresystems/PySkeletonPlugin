@@ -20,11 +20,15 @@ optional arguments:
 To switch MQTT broker, kill the program and start again with new arguments.
 """
 
-from constants import *
-import logging, logging.config
-import argparse, os
+import argparse
+import logging
+import logging.config
+import os
+
 from PyQt5.QtCore import QSettings, pyqtSignal, pyqtSlot, QTranslator, QDir
 from PyQt5.QtWidgets import QApplication
+
+from constants import *
 
 MQTT_KEEPALIVE = 15  # 15 seconds is default MQTT_KEEPALIVE in Arduino PubSubClient.h
 
@@ -274,6 +278,7 @@ class MqttApplet(QApplication):
             self._logger.error(self.tr("MQTT API : failed to call connect_async()"))
             self._logger.debug(e)
 
+    # __________________________________________________________________
     @property
     def logger(self):
         return self._logger

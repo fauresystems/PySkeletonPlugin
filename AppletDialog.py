@@ -8,8 +8,8 @@ Main dialog of an applet.
 """
 
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, QSettings, QPoint, QSize, QTimer
-from PyQt5.QtWidgets import QApplication, QDialog
 from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication, QDialog
 
 
 class AppletDialog(QDialog):
