@@ -39,6 +39,7 @@ Run `test.bat` to test you new **Echo** plugin :
 You are now ready to hack a new plugin :
 * add it to ***Room*** software (<a href="https://xcape.io/public/documentation/en/room/AddEchoPlugintoyourroom.html" target="_blank">see ***Room*** manual</a>)
 * create a new PyCharm project in the plugin folder (<a href="https://xcape.io/public/documentation/en/room/EditEchopluginwithPyCharm.html" target="_blank">see ***Room*** manual</a>)
+* you can run `clean-folder.bat` to remove unnecessary files now that build is complete
 
 
 ## Author
