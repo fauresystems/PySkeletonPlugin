@@ -1,2 +1,7 @@
-# PySkeletonPlugin
- Skeleton of Python project to create a Room plugin.
+﻿# PySkeletonPlugin
+ ***Skeleton to quickly create a plugin for xcape.io Room.***
+
+ ![](shot.png)
+ 
+ 
+ 
