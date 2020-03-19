@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-SkeletonDialog.py
+PluginDialog.py
 MIT License (c) Marie Faure <dev at faure dot systems>
 
-Dialog to control SkeletonProps app running on Raspberry.
+Dialog to control PluginProps app running on Raspberry.
 """
 
 import os, re
 
-from SkeletonSettingsDialog import SkeletonSettingsDialog
+from PluginSettingsDialog import PluginSettingsDialog
 from AppletDialog import AppletDialog
 from LedWidget import LedWidget
 from PyQt5.QtGui import QIcon, QPalette
@@ -18,7 +18,7 @@ from PyQt5.QtWidgets import (QHBoxLayout, QVBoxLayout, QFrame,
                              QPlainTextEdit, QPushButton, QSizePolicy, QComboBox, QLabel)
 
 
-class SkeletonDialog(AppletDialog):
+class PluginDialog(AppletDialog):
     aboutToClose = pyqtSignal()
     switchLed = pyqtSignal(str, str)
 
@@ -46,7 +46,7 @@ class SkeletonDialog(AppletDialog):
         main_layout = QVBoxLayout()
         main_layout.setSpacing(12)
 
-        self._led = LedWidget(self.tr("%PROPS_NAME%"), QSize(40, 20))
+        self._led = LedWidget(self.tr("Props name"), QSize(40, 20))
         self._led.setRedAsBold(True)
         self._led.setRedAsRed(True)
         self._led.switchOn('gray')
@@ -63,6 +63,8 @@ class SkeletonDialog(AppletDialog):
         header_layout.addWidget(settings_button, Qt.AlignRight)
         main_layout.addLayout(header_layout)
 
+        main_layout.addStretch(0)
+
         self.setLayout(main_layout)
 
         settings_button.pressed.connect(self.settings)
@@ -70,7 +72,7 @@ class SkeletonDialog(AppletDialog):
 
     # __________________________________________________________________
     @pyqtSlot(str)
-    def skeletonMessage(self, message):
+    def propsMessage(self, message):
         if message.startswith("DISCONNECTED"):
             self._led.switchOn('yellow')
         else:
@@ -84,7 +86,7 @@ class SkeletonDialog(AppletDialog):
     # __________________________________________________________________
     @pyqtSlot()
     def settings(self):
-        dlg = SkeletonSettingsDialog(self._logger)
+        dlg = PluginSettingsDialog(self._logger)
         dlg.setModal(True)
         dlg.move(self.pos() + QPoint(20, 20))
         dlg.exec()

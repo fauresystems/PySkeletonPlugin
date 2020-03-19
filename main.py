@@ -26,7 +26,7 @@ from PyQt5.QtGui import QIcon
 import paho.mqtt.client as mqtt
 import os,  sys,  platform, signal
 
-from SkeletonApplet import SkeletonApplet
+from PluginApplet import PluginApplet
 from Singleton import Singleton, SingletonException
 
 
@@ -40,11 +40,11 @@ except BaseException as e:
 	
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-clientid = "Xcape/%APPLET%/" + QUuid.createUuid().toString()
+clientid = "Xcape/Plugin/" + QUuid.createUuid().toString()
 
 mqtt_client = mqtt.Client(clientid, clean_session=True, userdata=None)
 
-applet = SkeletonApplet(sys.argv,  mqtt_client,  debugging_mqtt=True)
+applet = PluginApplet(sys.argv,  mqtt_client,  debugging_mqtt=True)
 
 applet.setApplicationDisplayName("Room")
 applet.setWindowIcon(QIcon('./room.png'));

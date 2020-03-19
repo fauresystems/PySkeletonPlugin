@@ -1,5 +1,5 @@
-﻿# PySkeletonPlugin
- ***Skeleton to quickly create a plugin for xcape.io Room.***
+﻿# PyPluginPlugin
+ ***Plugin to quickly create a plugin for xcape.io Room.***
  
 In the area of ​​Escape Room creation, we need to code quickly and reliably, and we need to streamline and reuse our code.
 

@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-SkeletonApplet.py
+PluginApplet.py
 MIT License (c) Marie Faure <dev at faure dot systems>
 
-SkeletonApplet application extends MqttApplet.
+PluginApplet application extends MqttApplet.
 """
 
 from constants import *
 from MqttApplet import MqttApplet
-from SkeletonDialog import SkeletonDialog
+from PluginDialog import PluginDialog
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 
 
-class SkeletonApplet(MqttApplet):
-    skeletonMessageReceived = pyqtSignal(str)
+class PluginApplet(MqttApplet):
+    propsMessageReceived = pyqtSignal(str)
 
     # __________________________________________________________________
     def __init__(self, argv, client, debugging_mqtt=False):
@@ -24,19 +24,19 @@ class SkeletonApplet(MqttApplet):
 
         # on_message per topic callbacks
         try:
-            mqtt_sub_skeleton = self._definitions['mqtt-sub-%PROPS%']
-            self._mqttClient.message_callback_add(mqtt_sub_skeleton, self.mqttOnMessageFromSkeletonProps)
+            mqtt_sub_props = self._definitions['mqtt-sub-props']
+            self._mqttClient.message_callback_add(mqtt_sub_props, self.mqttOnMessageFromProps)
         except Exception as e:
-            self._logger.error(self.tr("Skeleton sub topic definition is missing"))
+            self._logger.error(self.tr("Plugin sub topic definition is missing"))
             self._logger.debug(e)
 
         # on_message default callback
         self._mqttClient.on_message = self.mqttOnMessage
 
-        self._SkeletonDialog = SkeletonDialog(self.tr("Skeleton"), './room.png', self._logger)
-        self._SkeletonDialog.aboutToClose.connect(self.exitOnClose)
-        self.skeletonMessageReceived.connect(self._SkeletonDialog.skeletonMessage)
-        self._SkeletonDialog.show()
+        self._PluginDialog = PluginDialog(self.tr("Plugin"), './room.png', self._logger)
+        self._PluginDialog.aboutToClose.connect(self.exitOnClose)
+        self.propsMessageReceived.connect(self._PluginDialog.propsMessage)
+        self._PluginDialog.show()
 
     # __________________________________________________________________
     @pyqtSlot()
@@ -59,7 +59,7 @@ class SkeletonApplet(MqttApplet):
             self._logger.warning("{0} {1}".format(self.tr("MQTT message decoding failed on"), msg.topic))
 
     # __________________________________________________________________
-    def mqttOnMessageFromSkeletonProps(self, client, userdata, msg):
+    def mqttOnMessageFromProps(self, client, userdata, msg):
         message = None
         try:
             message = msg.payload.decode(encoding="utf-8", errors="strict")
@@ -68,17 +68,17 @@ class SkeletonApplet(MqttApplet):
 
         if message:
             self._logger.info(
-                self.tr("Message received from Skeleton props : '") + message + self.tr("' in ") + msg.topic)
-            self.skeletonMessageReceived.emit(message)
+                self.tr("Message received from Plugin props : '") + message + self.tr("' in ") + msg.topic)
+            self.propsMessageReceived.emit(message)
         else:
             self._logger.warning(
-                "{0} {1}".format(self.tr("Decoding MQTT message from Skeleton props failed on"), msg.topic))
+                "{0} {1}".format(self.tr("Decoding MQTT message from Plugin props failed on"), msg.topic))
 
     # __________________________________________________________________
     @pyqtSlot(str)
-    def publishMessageToSkeleton(self, message):
-        if self._definitions['mqtt-pub-%PROPS%']:
-            self.publishMessage(self._definitions['mqtt-pub-%PROPS%'], message)
+    def publishMessageToPlugin(self, message):
+        if self._definitions['mqtt-pub-props']:
+            self.publishMessage(self._definitions['mqtt-pub-props'], message)
         else:
             self._logger.warning(
-                "{0} : {1}".format(self.tr("SkeletonPlugin inbox is not defined, message ignored"), message))
+                "{0} : {1}".format(self.tr("PluginPlugin inbox is not defined, message ignored"), message))
