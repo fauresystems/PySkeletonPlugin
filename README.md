@@ -1,4 +1,4 @@
-﻿# PyPluginPlugin
+﻿# PySkeletonPlugin
  ***Plugin to quickly create a plugin for xcape.io Room.***
  
 In the area of ​​Escape Room creation, we need to code quickly and reliably, and we need to streamline and reuse our code.
@@ -18,28 +18,17 @@ C:\Users\jm_de\Documents\Xcape\Room\My room\Room\Plugins\PyEchoPlugin
 
 ```
 
-Download `PyEchoPlugin-master.zip` from this GitHub repository and unflate it in your plugin folder (not in `PyEchoPlugin-master` folder).
+Download `PySkeletonPlugin-master.zip` from this GitHub repository and unflate it in your plugin folder (not in `PySkeletonPlugin-master` folder).
 
 ![](screenshots/shot1.png)
 
 Run `install.bat` with a double-click to create the Python virtual environment (*venv*).
 
-Then run `build.bat` with a double-click, the builder GUI is filled from your plugin folder :
-
-![](screenshots/shot2.png)
-
-Click **Apply** button to build your new plugin : 
-
-![](screenshots/shot3.png)
-
-Run `test.bat` to test you new **Echo** plugin :
-
-![](screenshots/shot4.png)
+Run `test.bat` to test you new **Echo** plugin.
 
 You are now ready to hack a new plugin :
 * add it to ***Room*** software (<a href="https://xcape.io/public/documentation/en/room/AddEchoPlugintoyourroom.html" target="_blank">see ***Room*** manual</a>)
 * create a new PyCharm project in the plugin folder (<a href="https://xcape.io/public/documentation/en/room/EditEchopluginwithPyCharm.html" target="_blank">see ***Room*** manual</a>)
-* you can run `clean-folder.bat` to remove unnecessary files now that build is complete
 
 
 ## Author

@@ -81,4 +81,4 @@ class PluginApplet(MqttApplet):
             self.publishMessage(self._definitions['mqtt-pub-props'], message)
         else:
             self._logger.warning(
-                "{0} : {1}".format(self.tr("PluginPlugin inbox is not defined, message ignored"), message))
+                "{0} : {1}".format(self.tr("Plugin inbox is not defined, message ignored"), message))
