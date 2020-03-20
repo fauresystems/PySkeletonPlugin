@@ -72,7 +72,7 @@ class PluginDialog(AppletDialog):
 
     # __________________________________________________________________
     @pyqtSlot(str)
-    def propsMessage(self, message):
+    def onPropsMessage(self, message):
         if message.startswith("DISCONNECTED"):
             self._led.switchOn('yellow')
         else:

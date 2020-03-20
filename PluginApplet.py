@@ -35,7 +35,7 @@ class PluginApplet(MqttApplet):
 
         self._PluginDialog = PluginDialog(self.tr("Plugin"), './room.png', self._logger)
         self._PluginDialog.aboutToClose.connect(self.exitOnClose)
-        self.propsMessageReceived.connect(self._PluginDialog.propsMessage)
+        self.propsMessageReceived.connect(self._PluginDialog.onPropsMessage)
         self._PluginDialog.show()
 
     # __________________________________________________________________
