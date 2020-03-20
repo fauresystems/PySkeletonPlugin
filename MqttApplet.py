@@ -7,15 +7,11 @@ MIT License (c) Marie Faure <dev at faure dot systems>
 Base class for xcape.io Room applet (PyQt5 console application with MQTT).
 """
 
-import argparse
-import logging
-import logging.config
-import os
-
-from PyQt5.QtCore import QSettings, pyqtSignal, pyqtSlot, QTranslator, QDir
-from PyQt5.QtWidgets import QApplication
-
 from constants import *
+import logging, logging.config
+import argparse, os
+from PyQt5.QtCore import QSettings, pyqtSignal, pyqtSlot
+from PyQt5.QtWidgets import QApplication
 
 MQTT_KEEPALIVE = 15  # 15 seconds is default MQTT_KEEPALIVE in Arduino PubSubClient.h
 
@@ -72,51 +68,46 @@ class MqttApplet(QApplication):
         parser.add_argument("-p", "--port", help="change MQTT server port", nargs=1, type=int)
         parser.add_argument("-d", "--debug", help="set DEBUG log level", action='store_true')
         parser.add_argument("-l", "--logger", help="use logging config file", nargs=1)
-        parser.add_argument("-f", "--french", help="run in French", action='store_true')
-        args = vars(parser.parse_args())
 
-        if args['server']:
-            self._mqttServerHost = args['server'][0]
-            settings.setValue('host', self._mqttServerHost)
+        try:
+            args = vars(parser.parse_args())
 
-        if args['port']:
-            self._mqttServerPort = args['port'][0]
-            settings.setValue('port', self._mqttServerPort)
+            if args['server']:
+                self._mqttServerHost = args['server'][0]
+                settings.setValue('host', self._mqttServerHost)
 
-        if args['logger'] and os.path.isfile(args['logger']):
-            logging.config.fileConfig(args['logger'])
-            if args['debug']:
-                self._logger = logging.getLogger('debug')
-                self._logger.setLevel(logging.DEBUG)
+            if args['port']:
+                self._mqttServerPort = args['port'][0]
+                settings.setValue('port', self._mqttServerPort)
+
+            if args['logger'] and os.path.isfile(args['logger']):
+                logging.config.fileConfig(args['logger'])
+                if args['debug']:
+                    self._logger = logging.getLogger('debug')
+                    self._logger.setLevel(logging.DEBUG)
+                else:
+                    self._logger = logging.getLogger('production')
+                    self._logger.setLevel(logging.INFO)
+            elif os.path.isfile('logging.ini'):
+                logging.config.fileConfig('logging.ini')
+                if args['debug']:
+                    self._logger = logging.getLogger('debug')
+                    self._logger.setLevel(logging.DEBUG)
+                else:
+                    self._logger = logging.getLogger('production')
+                    self._logger.setLevel(logging.INFO)
             else:
-                self._logger = logging.getLogger('production')
-                self._logger.setLevel(logging.INFO)
-        elif os.path.isfile('logging.ini'):
-            logging.config.fileConfig('logging.ini')
-            if args['debug']:
-                self._logger = logging.getLogger('debug')
-                self._logger.setLevel(logging.DEBUG)
-            else:
-                self._logger = logging.getLogger('production')
-                self._logger.setLevel(logging.INFO)
-        else:
-            if args['debug']:
-                self._logger = logging.getLogger('debug')
-                self._logger.setLevel(logging.DEBUG)
-            else:
-                self._logger = logging.getLogger('production')
-                self._logger.setLevel(logging.INFO)
-            ch = logging.FileHandler('plugin.log', 'w')
-            ch.setLevel(logging.INFO)
-            self._logger.addHandler(ch)
-
-        self.translator = QTranslator()
-        if args['french']:
-            try:
-                if self.translator.load(TRANSLATOR_FR, QDir.currentPath()):
-                    self.installTranslator(self.translator)
-            except:
-                pass
+                if args['debug']:
+                    self._logger = logging.getLogger('debug')
+                    self._logger.setLevel(logging.DEBUG)
+                else:
+                    self._logger = logging.getLogger('production')
+                    self._logger.setLevel(logging.INFO)
+                ch = logging.FileHandler('plugin.log', 'w')
+                ch.setLevel(logging.INFO)
+                self._logger.addHandler(ch)
+        except:
+            pass
 
     # __________________________________________________________________
     def isConnectedToMqttBroker(self):
