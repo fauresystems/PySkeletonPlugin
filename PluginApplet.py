@@ -73,12 +73,3 @@ class PluginApplet(MqttApplet):
         else:
             self._logger.warning(
                 "{0} {1}".format(self.tr("Decoding MQTT message from Plugin props failed on"), msg.topic))
-
-    # __________________________________________________________________
-    @pyqtSlot(str)
-    def publishMessageToPlugin(self, message):
-        if self._definitions['mqtt-pub-props']:
-            self.publishMessage(self._definitions['mqtt-pub-props'], message)
-        else:
-            self._logger.warning(
-                "{0} : {1}".format(self.tr("Plugin inbox is not defined, message ignored"), message))
