@@ -4,7 +4,7 @@
 PluginSettingsDialog.py
 MIT License (c) Marie Faure <dev at faure dot systems>
 
-Dialog to configure clue language and kick efects.
+Dialog to configure plugin parameters.
 """
 
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot, QSettings, QSize
@@ -34,14 +34,14 @@ class PluginSettingsDialog(QDialog):
         main_layout = QVBoxLayout()
         main_layout.setSpacing(12)
 
-        lang_box = QGroupBox(self.tr("Configuration"))
-        lang_box_layout = QVBoxLayout(lang_box)
-        main_layout.addWidget(lang_box)
+        param_box = QGroupBox(self.tr("Configuration"))
+        param_box_layout = QVBoxLayout(param_box)
+        main_layout.addWidget(param_box)
 
         param1_button = QRadioButton(self.tr("Parameter 1"))
         param2_button = QRadioButton(self.tr("Parameter 2"))
-        lang_box_layout.addWidget(param1_button)
-        lang_box_layout.addWidget(param2_button)
+        param_box_layout.addWidget(param1_button)
+        param_box_layout.addWidget(param2_button)
 
         settings = QSettings("settings.ini", QSettings.IniFormat);
         settings.setIniCodec("UTF-8");
