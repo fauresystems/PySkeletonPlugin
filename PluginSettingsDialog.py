@@ -46,10 +46,10 @@ class PluginSettingsDialog(QDialog):
         settings = QSettings("settings.ini", QSettings.IniFormat);
         settings.setIniCodec("UTF-8");
         settings.beginGroup("Parameters")
-        lang = settings.value("param", 1)
+        param = settings.value("param", 1)
         settings.endGroup()
 
-        if lang == "fr":
+        if param == "2":
             param2_button.setChecked(True)
         else:
             param1_button.setChecked(True)
@@ -64,13 +64,13 @@ class PluginSettingsDialog(QDialog):
 
         self.setLayout(main_layout)
 
-        param1_button.pressed.connect(self.setParametersEnglish)
-        param2_button.pressed.connect(self.setParametersFrench)
+        param1_button.pressed.connect(self.setParameters1)
+        param2_button.pressed.connect(self.setParameters2)
         close_button.pressed.connect(self.accept)
 
     # __________________________________________________________________
     @pyqtSlot()
-    def setParametersEnglish(self):
+    def setParameters1(self):
 
         self._logger.info(self.tr("Settings : set English parameters"))
 
@@ -83,7 +83,7 @@ class PluginSettingsDialog(QDialog):
 
     # __________________________________________________________________
     @pyqtSlot()
-    def setParametersFrench(self):
+    def setParameters2(self):
 
         self._logger.info(self.tr("Settings : set French parameters"))
 
